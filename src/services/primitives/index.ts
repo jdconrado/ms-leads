@@ -1,1 +1,1 @@
-export * from './room.service.interface';
+export * from './lead.service.interface';

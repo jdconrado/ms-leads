@@ -1,10 +1,10 @@
-import { RepositoryModule } from '@infra/orm/repository.module';
-import { RoomService } from './room.service';
+import { ORMModule } from '@infra/orm/orm.module';
+import { LeadService } from './lead.service';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [RepositoryModule],
-  providers: [RoomService],
-  exports: [RoomService],
+  imports: [ORMModule],
+  providers: [LeadService],
+  exports: [LeadService],
 })
 export class ServiceModule {}

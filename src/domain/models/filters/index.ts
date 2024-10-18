@@ -1,1 +1,1 @@
-export * from './room-filter.model';
+export * from './lead-filter.model';

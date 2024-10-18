@@ -1,1 +1,1 @@
-export * from './room-filter.interface';
+export * from './lead-filter.interface';

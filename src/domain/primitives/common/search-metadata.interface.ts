@@ -1,7 +1,7 @@
 import { ISorting } from './sorting.interface';
 import { IOffsetPagination } from './offset-pagination.interface';
 
-export interface ISearchMetadata {
+export interface ISearchMetadata<SortingFields = string> {
   pagination?: IOffsetPagination;
-  sorting?: ISorting;
+  sorting?: ISorting<SortingFields>;
 }

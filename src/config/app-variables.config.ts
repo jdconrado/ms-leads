@@ -10,7 +10,7 @@ const APP_VARIABLES = {
   // MONGODB
   MONGODB_URI:
     process.env.MONGODB_URI ||
-    'mongodb://local_mongo_user:a3QwRjJ3c2V0@localhost:27017/ms-project?authSource=admin',
+    'mongodb://admin:admin@localhost:27017/ms-leads?authSource=admin',
 };
 
 const logger = new Logger('AppVariables');

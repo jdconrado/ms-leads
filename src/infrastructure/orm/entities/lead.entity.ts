@@ -1,5 +1,5 @@
 import { AutoMap } from '@automapper/classes';
-import { Entity, Column, BeforeUpdate } from 'typeorm';
+import { Entity, Column, BeforeInsert } from 'typeorm';
 import { ContactInfoEntity } from './contact-info.entity';
 import { BaseEntity } from './base.entity';
 import { LeadSourceCd, LeadStatusCd } from '@domain/enums';
@@ -62,29 +62,7 @@ export class LeadEntity extends BaseEntity {
   @Column({ nullable: true })
   companyId: string;
 
-  override update(input?: object): void {
-    if (!input) {
-      return;
-    }
-    const optionalKeys = [
-      'secondName',
-      'secondLastName',
-      'organizationName',
-      'jobTitle',
-      'assignedTo',
-      'assignedAt',
-    ];
-    for (const key in input) {
-      if (
-        Object.prototype.hasOwnProperty.call(this, key) ||
-        optionalKeys.includes(key)
-      ) {
-        this[key] = input[key];
-      }
-    }
-  }
-
-  @BeforeUpdate()
+  @BeforeInsert()
   updateSecondLastName() {
     const fields = [
       this.firstName,

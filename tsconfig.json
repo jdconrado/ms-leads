@@ -24,7 +24,8 @@
       "@config/*": ["src/config/*"],
       "@api/*": ["src/api/*"],
       "@tests/*": ["src/tests/*"],
-      "@app/*": ["src/*"]
+      "@app/*": ["src/*"],
+      "@utils/*": ["src/utils/*"]
     }
   }
 }

@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 import { LeadDto } from '@api/leads/dtos';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateLeadResponseDto {
+export class CreateUpdateLeadResponseDto {
   @AutoMap(() => LeadDto)
   @Type(() => LeadDto)
   @ApiProperty({ description: 'Lead', type: LeadDto })

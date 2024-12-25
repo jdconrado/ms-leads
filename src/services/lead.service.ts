@@ -1,10 +1,6 @@
 import { ILeadService } from '@services/primitives';
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  ILead,
-  ILeadFilter,
-  ISearchMetadata,
-} from '@domain/primitives';
+import { ILead, ILeadFilter, ISearchMetadata } from '@domain/primitives';
 import { LeadRepository } from '@infra/orm/repositories';
 
 @Injectable()
@@ -50,6 +46,14 @@ export class LeadService implements ILeadService {
     this.logger.debug('replace({id}, {input})', { id, input });
     const result = await this.repository.replace(id, input);
     this.logger.debug('replace: {result}', { result });
+
+    return result;
+  }
+
+  async patch(id: string, input: Partial<ILead>): Promise<ILead | null> {
+    this.logger.debug('patch({id}, {input})', { id, input });
+    const result = await this.repository.patch(id, input);
+    this.logger.debug('patch: {result}', { result });
 
     return result;
   }

@@ -1,7 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import {
-  Column,
   CreateDateColumn,
+  DeleteDateColumn,
   ObjectId,
   ObjectIdColumn,
   UpdateDateColumn,
@@ -21,11 +21,6 @@ export class BaseEntity {
   updatedAt: Date;
 
   @AutoMap()
-  @Column({ nullable: true })
+  @DeleteDateColumn({ nullable: true })
   deletedAt?: Date;
-
-  public update(input?: object) {
-    console.log('update', input);
-    throw new Error('Method not implemented.');
-  }
 }

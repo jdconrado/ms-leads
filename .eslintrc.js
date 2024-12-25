@@ -62,6 +62,11 @@ module.exports = {
       },
       {
         mode: 'folder',
+        type: 'utils',
+        pattern: 'src/utils/*'
+      },
+      {
+        mode: 'folder',
         type: 'tests',
         pattern: 'src/tests/*'
 
@@ -91,23 +96,23 @@ module.exports = {
         rules: [
           {
             from: 'domain',
-            allow: ['domain','config']
+            allow: ['domain','config', 'utils']
           },
           {
             from: 'infrastructure',
-            allow: ['infrastructure', 'config', 'domain', 'services']
+            allow: ['infrastructure', 'config', 'domain', 'services', 'utils']
           },
           {
             from: 'services',
-            allow: ['services', 'config', 'domain', 'infrastructure', 'api'] // TODO: Services should not have direct access to API
+            allow: ['services', 'config', 'domain', 'infrastructure', 'api', 'utils'] // TODO: Services should not have direct access to API
           },
           {
             from: 'api',
-            allow: ['api', 'config', 'domain', 'services', 'infrastructure'] // TODO: API should not have direct access to infrastructure
+            allow: ['api', 'config', 'domain', 'services', 'infrastructure', 'utils'] // TODO: API should not have direct access to infrastructure
           },
           {
             from: 'tests',
-            allow: ['tests', 'domain', 'services', 'api', 'infrastructure', 'config']
+            allow: ['tests', 'domain', 'services', 'api', 'infrastructure', 'config', 'utils']
           }
         ]
       },

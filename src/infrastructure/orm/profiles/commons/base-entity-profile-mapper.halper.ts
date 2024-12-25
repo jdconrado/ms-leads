@@ -16,7 +16,7 @@ export const extendEntityToModel = (mapper: Mapper) => {
     BaseModel,
     forMember(
       (d) => d.id,
-      mapFrom((s) => s._id.toString()),
+      mapFrom((s) => s._id?.toString()),
     ),
   );
 

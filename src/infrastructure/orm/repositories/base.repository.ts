@@ -7,6 +7,7 @@ import { ObjectId } from 'mongodb';
 import { APP_VARIABLES } from '@config/app-variables.config';
 import { SortDirectionEnum } from '@domain/enums';
 import { OffsetPagination, Sorting } from '@domain/models';
+import { setObjectProperties } from '@utils/helpers';
 
 export class BaseRepository<E extends BaseEntity, M extends IModel>
   implements IRepository<M>
@@ -32,9 +33,9 @@ export class BaseRepository<E extends BaseEntity, M extends IModel>
     if (!entity) {
       return null;
     }
-    await this.repository.remove(entity);
+    await this.repository.softRemove(entity);
 
-    this.mapToModel(entity);
+    return this.mapToModel(entity);
   }
 
   async getById(id: string): Promise<M | null> {
@@ -55,7 +56,19 @@ export class BaseRepository<E extends BaseEntity, M extends IModel>
     if (!entity) {
       return null;
     }
-    entity.update(input);
+    await this.repository.replaceOne({ _id: new ObjectId(id) }, input);
+
+    return input;
+  }
+
+  async patch(id: string, input: Partial<M>): Promise<M | null> {
+    const entity = await this.repository.findOne({
+      where: { _id: new ObjectId(id) },
+    });
+    if (!entity) {
+      return null;
+    }
+    setObjectProperties(entity, input as Partial<E | M>);
     const result = await this.repository.save(entity);
 
     return this.mapToModel(result);

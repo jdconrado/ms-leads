@@ -14,6 +14,7 @@ import {
   EntityDto,
   SearchLeadRequestDto,
   ContactInfoDto,
+  PatchLeadDto,
 } from '@api/leads/dtos';
 
 import { mapDateToISOString, mapISOStringToDate } from '@api/commons/utils';
@@ -48,6 +49,7 @@ export class LeadProfile extends AutomapperProfile {
     );
     createMap(mapper, LeadDto, Lead, mapISOStringToDate('assignedAt'));
     createMap(mapper, CreateLeadDto, Lead);
+    createMap(mapper, PatchLeadDto, Lead);
     createMap(mapper, SearchLeadRequestDto, LeadFilter);
   }
 

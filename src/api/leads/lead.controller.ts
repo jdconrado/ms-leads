@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { routePaths } from '@api/commons/route-paths';
@@ -28,6 +29,7 @@ import {
   CreateLeadCommand,
   DeleteLeadCommand,
   PatchLeadCommand,
+  ReplaceLeadCommand,
 } from '@api/leads/cqrs/commands';
 import { LeadDto } from '@api/leads/dtos/lead.dto';
 import { GetLeadQuery, SearchLeadsQuery } from '@api/leads/cqrs/queries';
@@ -136,6 +138,30 @@ export class LeadController {
     const command = new PatchLeadCommand(id, lead);
 
     const result = await this.commandBus.execute<PatchLeadCommand, Lead>(
+      command,
+    );
+
+    const response = new CreateUpdateLeadResponseDto();
+    response.lead = this.mapper.map(result, Lead, LeadDto);
+
+    return new DataResponse(response);
+  }
+
+  @Put('/:leadId')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Patch a lead' })
+  async replaceLead(
+    @Param('leadId') id: string,
+    @Body() body: CreateLeadRequestDto,
+  ): Promise<DataResponse<CreateUpdateLeadResponseDto>> {
+    if (!id) {
+      throw new BadRequestException('Id is required');
+    }
+
+    const lead = this.mapper.map(body.lead, CreateLeadDto, Lead);
+    const command = new ReplaceLeadCommand(id, lead);
+
+    const result = await this.commandBus.execute<ReplaceLeadCommand, Lead>(
       command,
     );
 

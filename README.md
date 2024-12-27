@@ -1,73 +1,135 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Leads Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The Leads Service is a backend service built with NestJS to manage leads. It uses various technologies and libraries to provide a robust and scalable solution for handling lead data.
 
-## Description
+## Technologies Used
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **NestJS**: A progressive Node.js framework for building efficient and scalable server-side applications.
+- **TypeScript**: A strongly typed programming language that builds on JavaScript.
+- **Automapper**: A convention-based object-object mapper in .NET.
+- **TypeORM**: An ORM for TypeScript and JavaScript (ES7, ES6, ES5).
+- **MongoDB**: A NoSQL database for storing lead data.
+- **Jest**: A delightful JavaScript testing framework.
+- **Swagger**: A tool for API documentation.
+- **Class-validator**: A library for validation of object properties.
 
-## Installation
+## Project Structure
 
-```bash
-$ yarn install
+```
+src/
+├── api/
+│   ├── commons/
+│   │   ├── dtos/
+│   │   └── utils/
+│   ├── leads/
+│   │   ├── cqrs/
+│   │   │   ├── commands/
+│   │   │   └── queries/
+│   │   ├── dtos/
+│   │   │   └── requests/
+│   │   ├── profiles/
+│   │   └── lead.controller.ts
+├── domain/
+│   ├── enums/
+│   ├── models/
+│   └── primitives/
+├── main.ts
+├── app.module.ts
+test/
+├── jest-e2e.json
+├── app.e2e-spec.ts
 ```
 
-## Running the app
+## Features
 
-```bash
-# development
-$ yarn run start
+### Entities and Models
 
-# watch mode
-$ yarn run start:dev
+- **Lead**: Represents a lead with properties like first name, last name, contact information, etc.
+- **ContactInfo**: Represents contact information for a lead.
+- **LeadFilter**: Used for filtering leads during search operations.
+- **OffsetPagination**: Used for pagination in search results.
 
-# production mode
-$ yarn run start:prod
-```
+### DTOs (Data Transfer Objects)
 
-## Test
+- **LeadDto**: Data transfer object for Lead.
+- **CreateLeadDto**: DTO for creating a new lead.
+- **PatchLeadDto**: DTO for updating an existing lead.
+- **SearchLeadRequestDto**: DTO for searching leads.
+- **ContactInfoDto**: DTO for contact information.
 
-```bash
-# unit tests
-$ yarn run test
+### ORM Usage
 
-# e2e tests
-$ yarn run test:e2e
+- **TypeORM**: Used for interacting with the MongoDB database. It provides a repository pattern for managing entities.
 
-# test coverage
-$ yarn run test:cov
-```
+### Automapper Profiles
 
-## Support
+- **LeadProfile**: Defines mappings between DTOs and models using Automapper.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Controllers
 
-## Stay in touch
+- **LeadController**: Handles HTTP requests related to leads, such as creating, updating, deleting, and searching leads.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Type Exports for Frontend Integration
+
+The service exports various types and DTOs to facilitate easier integration with frontend applications. These types ensure that the frontend and backend are in sync regarding the data structures being used.
+
+- **LeadDto**: Used on the frontend to represent lead data.
+- **CreateLeadDto**: Used on the frontend to create new leads.
+- **PatchLeadDto**: Used on the frontend to update existing leads.
+- **SearchLeadRequestDto**: Used on the frontend to search for leads.
+- **ContactInfoDto**: Used on the frontend to represent contact information.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/msvox-leads.git
+   ```
+2. Install dependencies:
+   ```bash
+   cd msvox-leads
+   npm install
+   ```
+
+### Running the Application
+
+- Development mode:
+  ```bash
+  npm run start:dev
+  ```
+- Production mode:
+  ```bash
+  npm run start:prod
+  ```
+
+### Running Tests
+
+- Unit tests:
+  ```bash
+  npm run test
+  ```
+- End-to-end tests:
+  ```bash
+  npm run test:e2e
+  ```
+
+### API Documentation
+
+The API documentation is available at `/api` when the application is running. It is generated using Swagger.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is licensed under the UNLICENSED License.

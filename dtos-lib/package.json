@@ -22,6 +22,7 @@
     "typescript"
   ],
   "author": "Juan Conrado",
+  "license": "MIT",
   "files": [
     "dist"
   ],

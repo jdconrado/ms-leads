@@ -41,8 +41,9 @@ import {
 } from '@api/commons/dtos';
 
 import { ISearchMetadata } from '@domain/primitives';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('leads')
 @Controller({ path: routePaths.leads.system })
 export class LeadController {
   constructor(
@@ -54,6 +55,10 @@ export class LeadController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a lead' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: DataResponse<CreateUpdateLeadResponseDto>,
+  })
   async createLead(
     @Body() body: CreateLeadRequestDto,
   ): Promise<DataResponse<CreateUpdateLeadResponseDto>> {
@@ -73,6 +78,9 @@ export class LeadController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Search leads' })
+  @ApiResponse({
+    type: DataMetadataResponseDto<LeadDto[], SearchLeadRequestDto>,
+  })
   async searchLeads(
     @Query() filter: SearchLeadRequestDto,
   ): Promise<DataMetadataResponseDto<LeadDto[], SearchLeadRequestDto>> {

@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger, LogLevel, ValidationPipe } from '@nestjs/common';
 import { APP_VARIABLES } from '@config/app-variables.config';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 
 const getLoggerLevels = (): LogLevel[] => {
   const logLevel = APP_VARIABLES.LOG_LEVEL;
@@ -38,13 +40,23 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Mediasoup NESTJS API')
-    .setDescription('The mediasoup nestjs API description')
+    .setTitle('Leads API')
+    .setDescription('Leads related operations api')
     .setVersion('1.0')
-    .addTag('mediasoup')
+    .addTag('leads')
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
+  });
   SwaggerModule.setup('api', app, document);
+
+  if (['local', 'ci'].includes(APP_VARIABLES.NODE_ENV)) {
+    // Save the OpenAPI document to a file
+    writeFileSync(
+      join(__dirname, '../../docs/openapi.json'),
+      JSON.stringify(document, null, 2),
+    );
+  }
 
   const appSettings = APP_VARIABLES;
   const logger = new Logger('bootstrap');

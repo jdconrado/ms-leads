@@ -10,7 +10,6 @@ import { HealthCheckModule } from '@api/health-check/health-check.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env',
       isGlobal: true,
       cache: true,
     }),

@@ -1,11 +1,14 @@
 {
-  "name": "@pivoxy/leads-client",
-  "version": "1.0.0",
-  "description": "OpenAPI client for @pivoxy/leads-client",
+  "name": "@nospi/leads-client",
+  "version": "0.1.0",
+  "description": "OpenAPI client for @nospi/leads-client",
   "author": "OpenAPI-Generator",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
+    "url": "git@github.com:jdconrado/ms-leads.git"
+  },
+  "publishConfig": {
+    "registry": "https://verdaccio.nospi.co/"
   },
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",

@@ -1,6 +1,6 @@
 {
-  "name": "@msvox/dtos-leads",
-  "version": "0.2.26",
+  "name": "@nospi/dtos-leads",
+  "version": "0.1.0",
   "description": "A library to provide DTOs and other components about Leads Service for front-end applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,11 @@
     "update-dtos": "ts-node ./copy-rename-paths.script.ts"
   },
   "repository": {
-    "url": "https://verdaccio.pivoxy.co/"
+    "type": "git",
+    "url": "git@github.com:jdconrado/ms-leads.git"
+  },
+  "publishConfig": {
+    "registry": "https://verdaccio.nospi.co/"
   },
   "keywords": [
     "DTO",

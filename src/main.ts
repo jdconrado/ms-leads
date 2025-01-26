@@ -5,6 +5,7 @@ import { Logger, LogLevel, ValidationPipe } from '@nestjs/common';
 import { APP_VARIABLES } from '@config/app-variables.config';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
+import { APICommonModels } from '@api/commons/dtos';
 
 const getLoggerLevels = (): LogLevel[] => {
   const logLevel = APP_VARIABLES.LOG_LEVEL;
@@ -46,6 +47,7 @@ async function bootstrap() {
     .addTag('leads')
     .build();
   const document = SwaggerModule.createDocument(app, config, {
+    extraModels: APICommonModels,
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
   });
   SwaggerModule.setup('api', app, document);
@@ -53,7 +55,7 @@ async function bootstrap() {
   if (['local', 'ci'].includes(APP_VARIABLES.NODE_ENV)) {
     // Save the OpenAPI document to a file
     writeFileSync(
-      join(__dirname, '../../docs/openapi.json'),
+      join(__dirname, '../docs/openapi.json'),
       JSON.stringify(document, null, 2),
     );
   }

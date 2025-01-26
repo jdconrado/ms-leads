@@ -35,13 +35,22 @@ import { LeadDto } from '@api/leads/dtos/lead.dto';
 import { GetLeadQuery, SearchLeadsQuery } from '@api/leads/cqrs/queries';
 import {
   DataMetadataResponseDto,
-  DataResponse,
+  DataResponseDto,
   MetadataResponseDto,
   OffsetPaginationDto,
 } from '@api/commons/dtos';
 
 import { ISearchMetadata } from '@domain/primitives';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiExtraModels,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  dataMetadataResponseSchema,
+  dataResponseSchema,
+} from '@api/commons/utils';
 
 @ApiTags('leads')
 @Controller({ path: routePaths.leads.system })
@@ -57,11 +66,12 @@ export class LeadController {
   @ApiOperation({ summary: 'Create a lead' })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: DataResponse<CreateUpdateLeadResponseDto>,
+    schema: dataResponseSchema(CreateUpdateLeadResponseDto),
   })
+  @ApiExtraModels(CreateUpdateLeadResponseDto)
   async createLead(
     @Body() body: CreateLeadRequestDto,
-  ): Promise<DataResponse<CreateUpdateLeadResponseDto>> {
+  ): Promise<DataResponseDto<CreateUpdateLeadResponseDto>> {
     const lead = this.mapper.map(body.lead, CreateLeadDto, Lead);
     const command = new CreateLeadCommand(lead);
 
@@ -72,15 +82,17 @@ export class LeadController {
     const response = new CreateUpdateLeadResponseDto();
     response.lead = this.mapper.map(result, Lead, LeadDto);
 
-    return new DataResponse(response);
+    return new DataResponseDto(response);
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Search leads' })
   @ApiResponse({
-    type: DataMetadataResponseDto<LeadDto[], SearchLeadRequestDto>,
+    status: HttpStatus.OK,
+    schema: dataMetadataResponseSchema([LeadDto], SearchLeadRequestDto),
   })
+  @ApiExtraModels(LeadDto, SearchLeadRequestDto)
   async searchLeads(
     @Query() filter: SearchLeadRequestDto,
   ): Promise<DataMetadataResponseDto<LeadDto[], SearchLeadRequestDto>> {
@@ -118,7 +130,14 @@ export class LeadController {
   @Get('/:leadId')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get a lead by id' })
-  async getLead(@Param('leadId') id: string): Promise<DataResponse<LeadDto>> {
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: dataResponseSchema(LeadDto),
+  })
+  @ApiExtraModels(LeadDto)
+  async getLead(
+    @Param('leadId') id: string,
+  ): Promise<DataResponseDto<LeadDto>> {
     if (!id) {
       throw new BadRequestException('Id is required');
     }
@@ -128,16 +147,21 @@ export class LeadController {
 
     const response = this.mapper.map(result, Lead, LeadDto);
 
-    return new DataResponse(response);
+    return new DataResponseDto(response);
   }
 
   @Patch('/:leadId')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Patch a lead' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: dataResponseSchema(CreateUpdateLeadResponseDto),
+  })
+  @ApiExtraModels(CreateUpdateLeadResponseDto)
   async patchLead(
     @Param('leadId') id: string,
     @Body() body: PatchLeadRequestDto,
-  ): Promise<DataResponse<CreateUpdateLeadResponseDto>> {
+  ): Promise<DataResponseDto<CreateUpdateLeadResponseDto>> {
     if (!id) {
       throw new BadRequestException('Id is required');
     }
@@ -152,16 +176,21 @@ export class LeadController {
     const response = new CreateUpdateLeadResponseDto();
     response.lead = this.mapper.map(result, Lead, LeadDto);
 
-    return new DataResponse(response);
+    return new DataResponseDto(response);
   }
 
   @Put('/:leadId')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Patch a lead' })
+  @ApiOperation({ summary: 'Replace a lead' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: dataResponseSchema(CreateUpdateLeadResponseDto),
+  })
+  @ApiExtraModels(CreateUpdateLeadResponseDto)
   async replaceLead(
     @Param('leadId') id: string,
     @Body() body: CreateLeadRequestDto,
-  ): Promise<DataResponse<CreateUpdateLeadResponseDto>> {
+  ): Promise<DataResponseDto<CreateUpdateLeadResponseDto>> {
     if (!id) {
       throw new BadRequestException('Id is required');
     }
@@ -176,12 +205,13 @@ export class LeadController {
     const response = new CreateUpdateLeadResponseDto();
     response.lead = this.mapper.map(result, Lead, LeadDto);
 
-    return new DataResponse(response);
+    return new DataResponseDto(response);
   }
 
   @Delete('/:leadId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete a lead' })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
   async deleteLead(@Param('leadId') id: string): Promise<void> {
     if (!id) {
       throw new BadRequestException('Id is required');

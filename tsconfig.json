@@ -27,5 +27,6 @@
       "@app/*": ["src/*"],
       "@utils/*": ["src/utils/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", "dist", "client-lib"]
 }

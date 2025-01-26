@@ -87,6 +87,8 @@ export class LeadRepository
       };
     }
 
+    queryObject.deletedAt = null;
+
     return queryObject;
   }
 }

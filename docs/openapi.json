@@ -9,7 +9,10 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "health"
+        ]
       }
     },
     "/api/system/leads": {
@@ -33,7 +36,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataResponse"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/CreateUpdateLeadResponseDto"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
                 }
               }
             }
@@ -190,12 +201,44 @@
           }
         ],
         "responses": {
-          "default": {
+          "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataMetadataResponseDto"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LeadDto"
+                      }
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "$ref": "#/components/schemas/OffsetPaginationDto"
+                        },
+                        "sort": {
+                          "$ref": "#/components/schemas/SortingDto"
+                        },
+                        "filter": {
+                          "$ref": "#/components/schemas/SearchLeadRequestDto"
+                        },
+                        "projection": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "metadata"
+                  ]
                 }
               }
             }
@@ -222,7 +265,22 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/LeadDto"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -254,7 +312,22 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/CreateUpdateLeadResponseDto"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -263,7 +336,7 @@
       },
       "put": {
         "operationId": "replaceLead",
-        "summary": "Patch a lead",
+        "summary": "Replace a lead",
         "parameters": [
           {
             "name": "leadId",
@@ -286,7 +359,22 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/CreateUpdateLeadResponseDto"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -332,6 +420,176 @@
   "servers": [],
   "components": {
     "schemas": {
+      "ContactInfoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ContactInfo Id"
+          },
+          "typeCd": {
+            "type": "string",
+            "description": "ContactInfo Type",
+            "enum": [
+              "email",
+              "phone"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "description": "ContactInfo Value"
+          },
+          "isPrimary": {
+            "type": "boolean",
+            "description": "Is Primary ContactInfo"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Created DateTime",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "typeCd",
+          "value",
+          "isPrimary",
+          "createdAt"
+        ]
+      },
+      "LeadDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Entity Id"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Created DateTime"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Updated DateTime"
+          },
+          "deletedAt": {
+            "type": "string",
+            "description": "Deleted DateTime"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Lead First Name"
+          },
+          "secondName": {
+            "type": "string",
+            "description": "Lead Second Name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Lead Last Name"
+          },
+          "secondLastName": {
+            "type": "string",
+            "description": "Lead Second Last Name"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "Lead Full Name"
+          },
+          "representsOrganization": {
+            "type": "boolean",
+            "description": "Represents Organization"
+          },
+          "organizationName": {
+            "type": "string",
+            "description": "Lead Organization Name"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Lead Job Title"
+          },
+          "contactData": {
+            "description": "Lead Contact Information",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactInfoDto"
+            }
+          },
+          "statusCd": {
+            "type": "string",
+            "description": "Lead Status Code",
+            "enum": [
+              "pvx:NEW",
+              "pvx:ENGAGED",
+              "pvx:QUALIFIED",
+              "pvx:IN_PROGRESS",
+              "pvx:NOT_QUALIFIED",
+              "pvx:LOST",
+              "pvx:NOT_INTERESTED"
+            ]
+          },
+          "sourceCd": {
+            "type": "string",
+            "description": "Lead Source Code",
+            "enum": [
+              "marketplace",
+              "website",
+              "email",
+              "phone",
+              "facebook",
+              "instagram",
+              "twitter",
+              "linkedin",
+              "youtube",
+              "google",
+              "other"
+            ]
+          },
+          "assignedTo": {
+            "type": "string",
+            "description": "Assigned To"
+          },
+          "assignedAt": {
+            "type": "string",
+            "description": "Assigned DateTime",
+            "format": "date-time"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "Company Id"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "deletedAt",
+          "firstName",
+          "lastName",
+          "fullName",
+          "representsOrganization",
+          "contactData",
+          "statusCd",
+          "sourceCd",
+          "companyId"
+        ]
+      },
+      "CreateUpdateLeadResponseDto": {
+        "type": "object",
+        "properties": {
+          "lead": {
+            "description": "Lead",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LeadDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "lead"
+        ]
+      },
       "CreateContactInfoDto": {
         "type": "object",
         "properties": {
@@ -452,11 +710,7 @@
           "lead"
         ]
       },
-      "DataResponse": {
-        "type": "object",
-        "properties": {}
-      },
-      "OffsetPaginationDto": {
+      "SearchLeadRequestDto": {
         "type": "object",
         "properties": {
           "offset": {
@@ -470,77 +724,75 @@
           "count": {
             "type": "number",
             "description": "Total records"
+          },
+          "fullName": {
+            "type": "string",
+            "description": "Lead Full Name"
+          },
+          "representsOrganization": {
+            "type": "string",
+            "description": "Represents Organization"
+          },
+          "organizationName": {
+            "type": "string",
+            "description": "Lead Organization Name"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Lead Job Title"
+          },
+          "statusCd": {
+            "type": "array",
+            "description": "Lead Status Code",
+            "items": {
+              "type": "string",
+              "enum": [
+                "pvx:NEW",
+                "pvx:ENGAGED",
+                "pvx:QUALIFIED",
+                "pvx:IN_PROGRESS",
+                "pvx:NOT_QUALIFIED",
+                "pvx:LOST",
+                "pvx:NOT_INTERESTED"
+              ]
+            }
+          },
+          "sourceCd": {
+            "type": "array",
+            "description": "Lead Source Code",
+            "items": {
+              "type": "string",
+              "enum": [
+                "pvx:NEW",
+                "pvx:ENGAGED",
+                "pvx:QUALIFIED",
+                "pvx:IN_PROGRESS",
+                "pvx:NOT_QUALIFIED",
+                "pvx:LOST",
+                "pvx:NOT_INTERESTED"
+              ]
+            }
+          },
+          "assignedTo": {
+            "type": "string",
+            "description": "Assigned To"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "Company Id"
+          },
+          "email": {
+            "type": "string",
+            "description": "Lead Email"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Lead Phone"
           }
         },
         "required": [
           "offset",
           "limit"
-        ]
-      },
-      "SortingDto": {
-        "type": "object",
-        "properties": {
-          "orderField": {
-            "type": "string",
-            "description": "Order field name"
-          },
-          "orderDirection": {
-            "type": "string",
-            "description": "Order direction"
-          }
-        }
-      },
-      "MetadataResponseDto": {
-        "type": "object",
-        "properties": {
-          "pagination": {
-            "description": "Offset pagination info",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/OffsetPaginationDto"
-              }
-            ]
-          },
-          "sort": {
-            "description": "Sorting info",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SortingDto"
-              }
-            ]
-          },
-          "filter": {
-            "type": "object",
-            "description": "Filter info"
-          },
-          "projection": {
-            "description": "Projection fields",
-            "example": [
-              "id",
-              "firstName",
-              "lastName"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "DataMetadataResponseDto": {
-        "type": "object",
-        "properties": {
-          "metadata": {
-            "description": "Metadata info",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MetadataResponseDto"
-              }
-            ]
-          }
-        },
-        "required": [
-          "metadata"
         ]
       },
       "PatchLeadDto": {
@@ -635,6 +887,110 @@
         },
         "required": [
           "lead"
+        ]
+      },
+      "DataResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "Data info"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "OffsetPaginationDto": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "number",
+            "description": "Pagination offset"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Pagination limit"
+          },
+          "count": {
+            "type": "number",
+            "description": "Total records"
+          }
+        },
+        "required": [
+          "offset",
+          "limit"
+        ]
+      },
+      "SortingDto": {
+        "type": "object",
+        "properties": {
+          "orderField": {
+            "type": "string",
+            "description": "Order field name"
+          },
+          "orderDirection": {
+            "type": "string",
+            "description": "Order direction"
+          }
+        }
+      },
+      "MetadataResponseDto": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "description": "Offset pagination info",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OffsetPaginationDto"
+              }
+            ]
+          },
+          "sort": {
+            "description": "Sorting info",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SortingDto"
+              }
+            ]
+          },
+          "filter": {
+            "type": "object",
+            "description": "Filter info"
+          },
+          "projection": {
+            "description": "Projection fields",
+            "example": [
+              "id",
+              "firstName",
+              "lastName"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DataMetadataResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "Data info"
+          },
+          "metadata": {
+            "description": "Metadata info",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MetadataResponseDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data",
+          "metadata"
         ]
       }
     }

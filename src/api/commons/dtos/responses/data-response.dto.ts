@@ -1,7 +1,8 @@
 import { AutoMap } from '@automapper/classes';
-
-export class DataResponse<T> {
+import { ApiProperty } from '@nestjs/swagger';
+export class DataResponseDto<T> {
   @AutoMap()
+  @ApiProperty({ description: 'Data info' })
   data: T;
 
   constructor(data?: T) {

@@ -5,13 +5,15 @@
     "version": "7.11.0",
     "generators": {
       "default": {
-        "generatorName": "typescript-fetch",
+        "generatorName": "typescript-axios",
         "glob": "docs/openapi.json",
         "output": "./client-lib",
         "additionalProperties": {
+          "axiosVersion": "1.7.9",
           "supportsES6": true,
-          "npmName": "@pivoxy/leads-client",
-          "npmVersion": "1.0.0",
+          "npmName": "@nospi/leads-client",
+          "npmRepository": "https://verdaccio.nospi.co/",
+          "npmVersion": "0.2.2",
           "withInterfaces": true
         }
       }
